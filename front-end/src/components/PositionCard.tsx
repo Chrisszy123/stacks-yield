@@ -3,26 +3,60 @@ import { useState } from "react";
 import { useUserPosition } from "@/hooks/useUserPosition";
 import { STRATEGIES } from "@/constants/protocols";
 import { WithdrawModal } from "./WithdrawModal";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PositionCardProps {
   userAddress: string;
 }
+
+const riskColor: Record<string, string> = {
+  Low:    "var(--green)",
+  Medium: "var(--yellow)",
+  High:   "var(--red)",
+};
+
+const riskBadgeStyle = (risk: string) => ({
+  color: riskColor[risk] ?? "var(--text-2)",
+  background:
+    risk === "Low"    ? "rgba(61,214,140,0.1)"  :
+    risk === "Medium" ? "rgba(245,200,66,0.1)"  :
+    "rgba(241,106,106,0.1)",
+  border: `1px solid ${
+    risk === "Low"    ? "rgba(61,214,140,0.3)"  :
+    risk === "Medium" ? "rgba(245,200,66,0.3)"  :
+    "rgba(241,106,106,0.3)"
+  }`,
+});
 
 export function PositionCard({ userAddress }: PositionCardProps) {
   const { data: position, isLoading } = useUserPosition(userAddress);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
 
   if (isLoading) {
-    return <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 animate-pulse h-56" />;
+    return (
+      <div
+        className="rounded-[16px] p-[26px] space-y-4"
+        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+      >
+        <Skeleton className="h-5 w-24" />
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-10 w-full mt-4" />
+      </div>
+    );
   }
 
   if (!position || position.ysBtcShares === 0) {
     return (
-      <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6 flex flex-col items-center justify-center min-h-[14rem]">
-        <p className="text-4xl mb-3">₿</p>
-        <p className="text-zinc-400 font-medium mb-1">No active position</p>
-        <p className="text-zinc-600 text-sm text-center">
-          Deposit sBTC to start earning Bitcoin-native yield
+      <div
+        className="rounded-[16px] p-[26px] flex flex-col items-center justify-center min-h-[14rem]"
+        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+      >
+        <p
+          className="font-mono text-[13px] text-center"
+          style={{ color: "var(--text-muted)" }}
+        >
+          No active position
         </p>
       </div>
     );
@@ -32,46 +66,56 @@ export function PositionCard({ userAddress }: PositionCardProps) {
 
   return (
     <>
-      <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
+      <div
+        className="rounded-[16px] p-[26px] transition-all duration-[180ms]"
+        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+      >
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-white font-bold text-lg">Your Position</h3>
+          <h3 className="font-syne font-bold text-[15px]" style={{ color: "var(--text)" }}>
+            Your Position
+          </h3>
           <span
-            className="text-xs font-bold px-3 py-1 rounded-full"
-            style={{ backgroundColor: `${strategy.color}20`, color: strategy.color }}
+            className="font-mono text-[11px] px-[9px] py-[3px] rounded-[6px]"
+            style={riskBadgeStyle(strategy.risk)}
           >
-            {strategy.emoji} {strategy.name}
+            {strategy.name}
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div>
-            <p className="text-zinc-500 text-sm">Deposited</p>
-            <p className="text-white font-bold text-xl font-mono">
-              {position.sbtcDeposited.toFixed(6)} sBTC
-            </p>
-          </div>
-          <div>
-            <p className="text-zinc-500 text-sm">ysBTC Shares</p>
-            <p className="text-orange-400 font-bold text-xl font-mono">
-              {position.ysBtcShares.toFixed(6)}
-            </p>
-          </div>
-          <div>
-            <p className="text-zinc-500 text-sm">Strategy APY</p>
-            <p className="text-green-400 font-bold text-xl">{strategy.expectedAPY}</p>
-          </div>
-          <div>
-            <p className="text-zinc-500 text-sm">Since Block</p>
-            <p className="text-white font-bold text-xl font-mono">
-              #{position.depositBlock}
-            </p>
-          </div>
+        {/* Metrics */}
+        <div className="grid grid-cols-2 gap-5 mb-6">
+          <Metric label="Deposited" value={`${position.sbtcDeposited.toFixed(6)} sBTC`} />
+          <Metric
+            label="ysBTC Shares"
+            value={position.ysBtcShares.toFixed(6)}
+            valueColor="var(--accent)"
+          />
+          <Metric
+            label="Strategy APY"
+            value={strategy.expectedAPY}
+            valueColor="var(--green)"
+          />
+          <Metric label="Since Block" value={`#${position.depositBlock}`} />
         </div>
 
+        {/* Withdraw */}
         <button
           onClick={() => setWithdrawOpen(true)}
-          className="w-full py-3 rounded-xl border border-zinc-700 hover:border-orange-500 
-                     text-zinc-300 hover:text-orange-400 font-semibold transition-all duration-200"
+          className="w-full py-3 rounded-[11px] border font-syne font-bold text-[14px] transition-all duration-[180ms] active:scale-[0.97]"
+          style={{
+            background: "transparent",
+            borderColor: "var(--border)",
+            color: "var(--text-2)",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-hover)";
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--text)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+            (e.currentTarget as HTMLButtonElement).style.color = "var(--text-2)";
+          }}
         >
           Withdraw
         </button>
@@ -83,5 +127,26 @@ export function PositionCard({ userAddress }: PositionCardProps) {
         userAddress={userAddress}
       />
     </>
+  );
+}
+
+function Metric({
+  label,
+  value,
+  valueColor = "var(--text)",
+}: {
+  label: string;
+  value: string;
+  valueColor?: string;
+}) {
+  return (
+    <div>
+      <p className="font-sans text-[12px] mb-1" style={{ color: "var(--text-muted)" }}>
+        {label}
+      </p>
+      <p className="font-mono font-medium text-[18px]" style={{ color: valueColor }}>
+        {value}
+      </p>
+    </div>
   );
 }

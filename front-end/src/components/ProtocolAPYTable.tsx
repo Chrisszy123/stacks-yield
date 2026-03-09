@@ -1,5 +1,6 @@
 "use client";
 import { useProtocolAPYs } from "@/hooks/useProtocolAPYs";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const protocols = [
   {
@@ -7,49 +8,89 @@ const protocols = [
     key: "zest" as const,
     risk: "Low",
     tier: "Conservative",
-    color: "#22c55e",
+    apy_color: "var(--green)",
+    risk_badge: "green" as const,
   },
   {
     name: "Bitflow",
     key: "bitflow" as const,
     risk: "Medium",
     tier: "Balanced",
-    color: "#eab308",
+    apy_color: "var(--yellow)",
+    risk_badge: "yellow" as const,
   },
   {
     name: "ALEX",
     key: "alex" as const,
     risk: "High",
     tier: "Aggressive",
-    color: "#ef4444",
+    apy_color: "var(--red)",
+    risk_badge: "red" as const,
   },
 ];
+
+const badgeStyle = {
+  green:  { color: "var(--green)",  background: "rgba(61,214,140,0.1)",  border: "1px solid rgba(61,214,140,0.3)"  },
+  yellow: { color: "var(--yellow)", background: "rgba(245,200,66,0.1)",  border: "1px solid rgba(245,200,66,0.3)"  },
+  red:    { color: "var(--red)",    background: "rgba(241,106,106,0.1)", border: "1px solid rgba(241,106,106,0.3)" },
+};
 
 export function ProtocolAPYTable() {
   const { data: apys, isLoading } = useProtocolAPYs();
 
   return (
-    <div className="rounded-xl bg-zinc-900 border border-zinc-800 p-6">
-      <h3 className="text-white font-bold text-lg mb-4">Live Protocol APYs</h3>
-      <div className="space-y-1">
-        {protocols.map((p) => (
+    <div
+      className="rounded-[16px] overflow-hidden"
+      style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+    >
+      <div className="p-[26px] pb-0">
+        <h3 className="font-syne font-bold text-[15px] mb-5" style={{ color: "var(--text)" }}>
+          Live Protocol APYs
+        </h3>
+      </div>
+
+      <div>
+        {protocols.map((p, i) => (
           <div
             key={p.name}
-            className="flex items-center justify-between py-3 border-b border-zinc-800 last:border-0"
+            className="flex items-center justify-between px-[26px] py-4 transition-colors duration-[180ms]"
+            style={{
+              borderTop: i === 0 ? "none" : "1px solid var(--border)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLDivElement).style.background = "var(--surface-2)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLDivElement).style.background = "";
+            }}
           >
-            <div>
-              <p className="text-white font-medium">{p.name}</p>
-              <p className="text-zinc-500 text-sm">{p.tier} tier</p>
+            <div className="flex items-center gap-3">
+              <div>
+                <p className="font-syne font-bold text-[14px]" style={{ color: "var(--text)" }}>
+                  {p.name}
+                </p>
+                <p className="font-sans text-[13px]" style={{ color: "var(--text-muted)" }}>
+                  {p.tier} tier
+                </p>
+              </div>
             </div>
-            <div className="text-right">
-              <p className="font-bold text-xl font-mono" style={{ color: p.color }}>
+
+            <div className="flex items-center gap-3">
+              <span
+                className="font-mono text-[11px] px-[9px] py-[3px] rounded-[6px]"
+                style={badgeStyle[p.risk_badge]}
+              >
+                {p.risk}
+              </span>
+              <div className="text-right min-w-[56px]">
                 {isLoading ? (
-                  <span className="text-zinc-600 animate-pulse">...</span>
+                  <Skeleton className="h-6 w-14" />
                 ) : (
-                  `${apys?.[p.key].toFixed(1) ?? "—"}%`
+                  <p className="font-mono font-medium text-[20px]" style={{ color: p.apy_color }}>
+                    {apys?.[p.key] !== undefined ? `${apys[p.key].toFixed(1)}%` : "—"}
+                  </p>
                 )}
-              </p>
-              <p className="text-zinc-500 text-xs">{p.risk} risk</p>
+              </div>
             </div>
           </div>
         ))}

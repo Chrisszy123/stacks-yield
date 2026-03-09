@@ -1,7 +1,9 @@
 "use client";
+import { motion } from "framer-motion";
 import { STRATEGIES, StrategyId } from "@/constants/protocols";
 import { useProtocolAPYs } from "@/hooks/useProtocolAPYs";
 import { cn } from "@/lib/utils";
+import { cardSelectVariants } from "@/lib/motion";
 
 interface StrategySelectorProps {
   selected: StrategyId;
@@ -10,51 +12,87 @@ interface StrategySelectorProps {
 
 const APY_KEYS = ["zest", "bitflow", "alex"] as const;
 
+const riskColor: Record<string, string> = {
+  Low:    "var(--green)",
+  Medium: "var(--yellow)",
+  High:   "var(--red)",
+};
+
+const riskBadgeStyle = (risk: string) => ({
+  color: riskColor[risk] ?? "var(--text-2)",
+  background:
+    risk === "Low"    ? "rgba(61,214,140,0.1)"  :
+    risk === "Medium" ? "rgba(245,200,66,0.1)"  :
+    "rgba(241,106,106,0.1)",
+  border: `1px solid ${
+    risk === "Low"    ? "rgba(61,214,140,0.3)"  :
+    risk === "Medium" ? "rgba(245,200,66,0.3)"  :
+    "rgba(241,106,106,0.3)"
+  }`,
+});
+
 export function StrategySelector({ selected, onSelect }: StrategySelectorProps) {
   const { data: apys, isLoading } = useProtocolAPYs();
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
       {STRATEGIES.map((strategy) => {
         const isSelected = selected === strategy.id;
         const liveAPY = apys?.[APY_KEYS[strategy.id]];
 
         return (
-          <button
+          <motion.button
             key={strategy.id}
+            variants={cardSelectVariants}
+            animate={isSelected ? "selected" : "idle"}
             onClick={() => onSelect(strategy.id as StrategyId)}
             className={cn(
-              "rounded-xl border-2 p-5 text-left transition-all duration-200",
-              "hover:border-orange-500 hover:shadow-lg",
-              isSelected
-                ? "border-orange-500 bg-orange-500/10 shadow-orange-500/20 shadow-lg"
-                : "border-zinc-700 bg-zinc-900"
+              "rounded-[16px] p-5 text-left transition-all duration-[180ms] cursor-pointer outline-none"
             )}
+            style={{
+              background: isSelected ? "var(--accent-dim)" : "var(--surface-2)",
+              border: `1px solid ${isSelected ? "var(--border-accent)" : "var(--border)"}`,
+            }}
+            onMouseEnter={(e) => {
+              if (!isSelected) {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-hover)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isSelected) {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+              }
+            }}
           >
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-2xl">{strategy.emoji}</span>
+            <div className="flex items-center justify-between mb-4">
+              <span className="font-syne font-bold text-[14px]" style={{ color: "var(--text)" }}>
+                {strategy.name}
+              </span>
               <span
-                className="text-xs font-bold px-2 py-1 rounded-full"
-                style={{ backgroundColor: `${strategy.color}20`, color: strategy.color }}
+                className="font-mono text-[11px] px-[9px] py-[3px] rounded-[6px]"
+                style={riskBadgeStyle(strategy.risk)}
               >
-                {strategy.risk} Risk
+                {strategy.risk}
               </span>
             </div>
-            <h3 className="text-white font-bold text-lg mb-1">{strategy.name}</h3>
-            <p className="text-zinc-400 text-sm mb-3">{strategy.description}</p>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs text-zinc-500">Expected APY</p>
-                <p className="text-orange-400 font-bold text-xl font-mono">
-                  {isLoading ? "..." : liveAPY ? `${liveAPY.toFixed(1)}%` : strategy.expectedAPY}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-zinc-500">Protocols</p>
-                <p className="text-zinc-300 text-sm">{strategy.protocols.join(", ")}</p>
-              </div>
+
+            <p className="font-sans text-[13px] leading-relaxed mb-4" style={{ color: "var(--text-2)" }}>
+              {strategy.description}
+            </p>
+
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.1em] mb-1" style={{ color: "var(--text-muted)" }}>
+                APY
+              </p>
+              <p className="font-mono font-medium text-[22px]" style={{ color: "var(--accent)" }}>
+                {isLoading ? "—" : liveAPY !== undefined ? `${liveAPY.toFixed(1)}%` : strategy.expectedAPY}
+              </p>
             </div>
-          </button>
+
+            <p className="font-mono text-[11px] mt-3" style={{ color: "var(--text-muted)" }}>
+              {strategy.protocols.join(" · ")}
+            </p>
+          </motion.button>
         );
       })}
     </div>

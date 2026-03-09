@@ -7,56 +7,68 @@ export default {
   ],
   darkMode: ["class"],
   theme: {
-  	extend: {
-  		borderRadius: {
-  			lg: 'var(--radius)',
-  			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
-  		},
-  		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
-  			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
-  			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
-  			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
-  			}
-  		}
-  	}
+    extend: {
+      fontFamily: {
+        syne:    ['var(--font-syne)', 'system-ui', 'sans-serif'],
+        sans:    ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
+        mono:    ['var(--font-dm-mono)', 'monospace'],
+      },
+      borderRadius: {
+        lg:  '16px',
+        md:  '11px',
+        sm:  '8px',
+        xl:  '18px',
+        '2xl': '18px',
+        full: '9999px',
+      },
+      colors: {
+        bg:           '#04040a',
+        surface:      '#0d0d15',
+        'surface-2':  '#12121c',
+        accent:       '#f7931a',
+        'accent-dim': 'rgba(247,147,26,0.09)',
+        'accent-glow':'rgba(247,147,26,0.16)',
+        green:        '#3dd68c',
+        red:          '#f16a6a',
+        yellow:       '#f5c842',
+        text:         '#edecf2',
+        'text-2':     '#78778a',
+        'text-muted': '#47465a',
+        /* shadcn compat */
+        background:   'hsl(var(--background))',
+        foreground:   'hsl(var(--foreground))',
+        card: {
+          DEFAULT:    'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT:    'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        primary: {
+          DEFAULT:    'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT:    'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        muted: {
+          DEFAULT:    'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        destructive: {
+          DEFAULT:    'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        border:  'rgba(255,255,255,0.06)',
+        input:   'hsl(var(--input))',
+        ring:    'hsl(var(--ring))',
+      },
+      transitionDuration: {
+        DEFAULT: '180ms',
+      },
+    },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
-

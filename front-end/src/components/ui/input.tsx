@@ -1,6 +1,5 @@
-import * as React from "react"
-
-import { cn } from "@/lib/utils"
+import * as React from "react";
+import { cn } from "@/lib/utils";
 
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
@@ -8,15 +7,35 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
       <input
         type={type}
         className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+          "flex w-full rounded-[11px] px-4 py-[14px]",
+          "text-[15px] font-mono",
+          "placeholder:text-[var(--text-muted)]",
+          "disabled:cursor-not-allowed disabled:opacity-50",
+          "outline-none",
+          "transition-all duration-[180ms] ease-[ease]",
           className
         )}
+        style={{
+          background: "var(--surface-2)",
+          border: "1.5px solid var(--border)",
+          color: "var(--text)",
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = "var(--border-accent)";
+          e.currentTarget.style.boxShadow = "0 0 0 3px rgba(247,147,26,0.06)";
+          props.onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = "var(--border)";
+          e.currentTarget.style.boxShadow = "none";
+          props.onBlur?.(e);
+        }}
         ref={ref}
         {...props}
       />
-    )
+    );
   }
-)
-Input.displayName = "Input"
+);
+Input.displayName = "Input";
 
-export { Input }
+export { Input };
