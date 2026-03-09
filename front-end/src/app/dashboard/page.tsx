@@ -8,7 +8,9 @@ import { VaultStats } from "@/components/VaultStats";
 import { PositionCard } from "@/components/PositionCard";
 import { ProtocolAPYTable } from "@/components/ProtocolAPYTable";
 import { DepositModal } from "@/components/DepositModal";
+import { HowItWorksIllustration } from "@/components/HowItWorksIllustration";
 import { pageVariants, itemVariants } from "@/lib/motion";
+import { GLASS_BASE } from "@/components/ui/card";
 
 export default function DashboardPage() {
   const [depositOpen, setDepositOpen] = useState(false);
@@ -32,7 +34,7 @@ export default function DashboardPage() {
           <div>
             <p
               className="font-mono text-[11px] uppercase tracking-[0.12em] mb-3"
-              style={{ color: "var(--accent)" }}
+              style={{ color: "#f7931a" }}
             >
               Dashboard
             </p>
@@ -50,15 +52,24 @@ export default function DashboardPage() {
           {isConnected && (
             <motion.button
               whileTap={{ scale: 0.97 }}
-              whileHover={{ y: -1 }}
               onClick={() => setDepositOpen(true)}
-              className="font-syne font-bold text-[14px] rounded-[11px] px-[26px] py-[13px] transition-all duration-[180ms]"
-              style={{ background: "var(--accent)", color: "#000" }}
+              className="font-syne font-[800] text-[15px] tracking-[0.01em] rounded-[11px] px-8 py-[14px] disabled:opacity-40"
+              style={{
+                background: "#f7931a",
+                color:      "#ffffff",
+                transition: "background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
+              }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 5px 22px rgba(247,147,26,0.3)";
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "#ffaa47";
+                el.style.transform  = "translateY(-2px)";
+                el.style.boxShadow  = "0 8px 28px rgba(247,147,26,0.40)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = "";
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "#f7931a";
+                el.style.transform  = "";
+                el.style.boxShadow  = "none";
               }}
             >
               + Deposit sBTC
@@ -93,45 +104,10 @@ export default function DashboardPage() {
         <motion.section variants={itemVariants}>
           <SectionLabel>How it works</SectionLabel>
           <div
-            className="rounded-[16px] grid grid-cols-1 md:grid-cols-3 gap-px overflow-hidden"
-            style={{ border: "1px solid var(--border)", background: "var(--border)" }}
+            className="rounded-[16px] p-8"
+            style={{ ...GLASS_BASE }}
           >
-            {[
-              {
-                step: "01",
-                title: "Deposit sBTC",
-                desc: "Lock your sBTC in the vault and choose a risk strategy — Conservative, Balanced, or Aggressive.",
-              },
-              {
-                step: "02",
-                title: "Receive ysBTC",
-                desc: "Get ysBTC receipt tokens representing your proportional share of the vault. These accrue yield over time.",
-              },
-              {
-                step: "03",
-                title: "Earn & Withdraw",
-                desc: "Your sBTC is deployed across Zest, Bitflow, and ALEX. Withdraw anytime by burning your ysBTC shares.",
-              },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="p-7"
-                style={{ background: "var(--surface)" }}
-              >
-                <p
-                  className="font-mono text-[11px] uppercase tracking-[0.12em] mb-3"
-                  style={{ color: "var(--accent)" }}
-                >
-                  {item.step}
-                </p>
-                <p className="font-syne font-bold text-[15px] mb-2" style={{ color: "var(--text)" }}>
-                  {item.title}
-                </p>
-                <p className="font-sans text-[14px] leading-relaxed" style={{ color: "var(--text-2)" }}>
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+            <HowItWorksIllustration />
           </div>
         </motion.section>
       </motion.div>
@@ -156,10 +132,7 @@ function EmptyPositionState() {
   return (
     <div
       className="rounded-[16px] p-[26px] flex flex-col items-center justify-center min-h-[14rem]"
-      style={{
-        background: "var(--surface)",
-        border: "1px solid var(--border)",
-      }}
+      style={{ ...GLASS_BASE }}
     >
       <p
         className="font-mono text-[13px] text-center mb-5"

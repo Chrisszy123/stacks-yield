@@ -6,15 +6,34 @@ import { useDeposit } from "@/hooks/useDeposit";
 import { StrategyId } from "@/constants/protocols";
 import { modalVariants, backdropVariants } from "@/lib/motion";
 
+/* ── Shared glass surface for the modal shell ───────────────────────── */
+const MODAL_STYLE: React.CSSProperties = {
+  background:              "rgba(13,13,21,0.92)",
+  backdropFilter:          "blur(24px)",
+  WebkitBackdropFilter:    "blur(24px)",
+  border:                  "1px solid rgba(255,255,255,0.09)",
+  boxShadow: [
+    "0 4px 8px rgba(0,0,0,0.5)",
+    "0 24px 64px rgba(0,0,0,0.4)",
+    "inset 0 1px 0 rgba(255,255,255,0.07)",
+  ].join(", "),
+};
+
+/* ── Inner surface (inputs, preview) ───────────────────────────────── */
+const INNER_STYLE: React.CSSProperties = {
+  background: "rgba(255,255,255,0.04)",
+  border:     "1px solid rgba(255,255,255,0.08)",
+};
+
 interface DepositModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 export function DepositModal({ isOpen, onClose }: DepositModalProps) {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount]     = useState("");
   const [strategy, setStrategy] = useState<StrategyId>(1);
-  const { deposit, isLoading } = useDeposit();
+  const { deposit, isLoading }  = useDeposit();
 
   const handleDeposit = async () => {
     const num = Number(amount);
@@ -44,7 +63,7 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {/* Modal shell */}
           <motion.div
             key="modal"
             variants={modalVariants}
@@ -52,10 +71,7 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
             animate="visible"
             exit="exit"
             className="fixed left-1/2 top-1/2 z-50 w-full max-w-2xl -translate-x-1/2 -translate-y-1/2 max-h-[90vh] overflow-y-auto rounded-[16px] p-8"
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-            }}
+            style={MODAL_STYLE}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-7">
@@ -64,15 +80,15 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
               </h2>
               <button
                 onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center rounded-[8px] font-mono text-[16px] transition-all duration-[180ms] active:scale-[0.97]"
-                style={{ color: "var(--text-muted)", background: "transparent" }}
+                className="w-8 h-8 flex items-center justify-center rounded-[8px] font-mono text-[16px] active:scale-[0.97]"
+                style={{ color: "var(--text-muted)", background: "transparent", transition: "all 0.18s ease" }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.background = "var(--surface-2)";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--text)";
+                  (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.07)";
+                  (e.currentTarget as HTMLButtonElement).style.color      = "var(--text)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                  (e.currentTarget as HTMLButtonElement).style.color = "var(--text-muted)";
+                  (e.currentTarget as HTMLButtonElement).style.color      = "var(--text-muted)";
                 }}
               >
                 ✕
@@ -88,15 +104,14 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
                 Amount (sBTC)
               </label>
               <div
-                className="deposit-amount-wrap flex items-center rounded-[11px] px-4 transition-all duration-[180ms]"
+                className="deposit-amount-wrap flex items-center rounded-[11px] px-4"
                 style={{
-                  background: "var(--surface-2)",
-                  border: "1.5px solid var(--border)",
+                  background: "rgba(255,255,255,0.04)",
+                  border:     "1.5px solid rgba(255,255,255,0.08)",
+                  transition: "border-color 0.18s ease, box-shadow 0.18s ease",
                 }}
               >
-                <span className="font-mono text-[18px] mr-3" style={{ color: "var(--accent)" }}>
-                  ₿
-                </span>
+                <span className="font-mono text-[18px] mr-3" style={{ color: "#f7931a" }}>₿</span>
                 <input
                   type="number"
                   value={amount}
@@ -109,15 +124,15 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
                   onFocus={(e) => {
                     const wrap = e.currentTarget.closest(".deposit-amount-wrap") as HTMLDivElement;
                     if (wrap) {
-                      wrap.style.borderColor = "var(--border-accent)";
-                      wrap.style.boxShadow = "0 0 0 3px rgba(247,147,26,0.06)";
+                      wrap.style.borderColor = "rgba(247,147,26,0.40)";
+                      wrap.style.boxShadow   = "0 0 0 3px rgba(247,147,26,0.06)";
                     }
                   }}
                   onBlur={(e) => {
                     const wrap = e.currentTarget.closest(".deposit-amount-wrap") as HTMLDivElement;
                     if (wrap) {
-                      wrap.style.borderColor = "var(--border)";
-                      wrap.style.boxShadow = "none";
+                      wrap.style.borderColor = "rgba(255,255,255,0.08)";
+                      wrap.style.boxShadow   = "none";
                     }
                   }}
                 />
@@ -146,15 +161,12 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
                 exit={{ opacity: 0, y: 8 }}
                 transition={{ duration: 0.2 }}
                 className="mb-7 p-5 rounded-[12px]"
-                style={{
-                  background: "var(--surface-2)",
-                  border: "1px solid var(--border)",
-                }}
+                style={INNER_STYLE}
               >
                 <p className="font-sans text-[13px] mb-1" style={{ color: "var(--text-muted)" }}>
                   You will receive approximately
                 </p>
-                <p className="font-mono font-medium text-[22px]" style={{ color: "var(--accent)" }}>
+                <p className="font-mono font-medium text-[22px]" style={{ color: "#f7931a" }}>
                   {Number(amount).toFixed(8)} ysBTC
                 </p>
                 <p className="font-sans text-[12px] mt-1" style={{ color: "var(--text-muted)" }}>
@@ -163,21 +175,30 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
               </motion.div>
             )}
 
-            {/* CTA */}
+            {/* CTA — primary button spec */}
             <motion.button
               whileTap={{ scale: 0.97 }}
-              whileHover={{ y: -1 }}
               onClick={handleDeposit}
               disabled={isLoading || !amount || Number(amount) <= 0}
-              className="w-full py-4 rounded-[11px] font-syne font-bold text-[15px] transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: "var(--accent)", color: "#000" }}
+              className="w-full py-[14px] rounded-[11px] font-syne font-[800] text-[15px] tracking-[0.01em] disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                background: "#f7931a",
+                color:      "#ffffff",
+                transition: "background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease",
+              }}
               onMouseEnter={(e) => {
                 if (!(e.currentTarget as HTMLButtonElement).disabled) {
-                  (e.currentTarget as HTMLButtonElement).style.boxShadow = "0 5px 22px rgba(247,147,26,0.3)";
+                  const el = e.currentTarget as HTMLButtonElement;
+                  el.style.background = "#ffaa47";
+                  el.style.transform  = "translateY(-2px)";
+                  el.style.boxShadow  = "0 8px 28px rgba(247,147,26,0.40)";
                 }
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.boxShadow = "";
+                const el = e.currentTarget as HTMLButtonElement;
+                el.style.background = "#f7931a";
+                el.style.transform  = "";
+                el.style.boxShadow  = "none";
               }}
             >
               {isLoading ? "Awaiting signature..." : "Deposit sBTC"}

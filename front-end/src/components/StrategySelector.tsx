@@ -4,6 +4,7 @@ import { STRATEGIES, StrategyId } from "@/constants/protocols";
 import { useProtocolAPYs } from "@/hooks/useProtocolAPYs";
 import { cn } from "@/lib/utils";
 import { cardSelectVariants } from "@/lib/motion";
+import { GLASS_BASE } from "@/components/ui/card";
 
 interface StrategySelectorProps {
   selected: StrategyId;
@@ -12,14 +13,16 @@ interface StrategySelectorProps {
 
 const APY_KEYS = ["zest", "bitflow", "alex"] as const;
 
-const riskColor: Record<string, string> = {
-  Low:    "var(--green)",
-  Medium: "var(--yellow)",
-  High:   "var(--red)",
+const STRATEGY_COLORS: Record<string, { ring: string; glow: string }> = {
+  Low:    { ring: "rgba(61,214,140,0.6)",   glow: "rgba(61,214,140,0.18)"   },
+  Medium: { ring: "rgba(245,200,66,0.6)",   glow: "rgba(245,200,66,0.18)"   },
+  High:   { ring: "rgba(241,106,106,0.6)",  glow: "rgba(241,106,106,0.18)"  },
 };
 
 const riskBadgeStyle = (risk: string) => ({
-  color: riskColor[risk] ?? "var(--text-2)",
+  color:
+    risk === "Low"    ? "var(--green)"  :
+    risk === "Medium" ? "var(--yellow)" : "var(--red)",
   background:
     risk === "Low"    ? "rgba(61,214,140,0.1)"  :
     risk === "Medium" ? "rgba(245,200,66,0.1)"  :
@@ -31,6 +34,16 @@ const riskBadgeStyle = (risk: string) => ({
   }`,
 });
 
+function selectedBoxShadow(risk: string): string {
+  const c = STRATEGY_COLORS[risk];
+  return [
+    "0 4px 8px rgba(0,0,0,0.35)",
+    "0 16px 40px rgba(0,0,0,0.25)",
+    "inset 0 1px 0 rgba(255,255,255,0.10)",
+    `0 0 28px ${c.glow}`,
+  ].join(", ");
+}
+
 export function StrategySelector({ selected, onSelect }: StrategySelectorProps) {
   const { data: apys, isLoading } = useProtocolAPYs();
 
@@ -38,7 +51,17 @@ export function StrategySelector({ selected, onSelect }: StrategySelectorProps) 
     <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
       {STRATEGIES.map((strategy) => {
         const isSelected = selected === strategy.id;
-        const liveAPY = apys?.[APY_KEYS[strategy.id]];
+        const liveAPY    = apys?.[APY_KEYS[strategy.id]];
+        const colors     = STRATEGY_COLORS[strategy.risk];
+
+        const cardStyle: React.CSSProperties = isSelected
+          ? {
+              ...GLASS_BASE,
+              background:   "rgba(255,255,255,0.065)",
+              borderColor:  colors.ring,
+              boxShadow:    selectedBoxShadow(strategy.risk),
+            }
+          : { ...GLASS_BASE };
 
         return (
           <motion.button
@@ -46,21 +69,32 @@ export function StrategySelector({ selected, onSelect }: StrategySelectorProps) 
             variants={cardSelectVariants}
             animate={isSelected ? "selected" : "idle"}
             onClick={() => onSelect(strategy.id as StrategyId)}
-            className={cn(
-              "rounded-[16px] p-5 text-left transition-all duration-[180ms] cursor-pointer outline-none"
-            )}
-            style={{
-              background: isSelected ? "var(--accent-dim)" : "var(--surface-2)",
-              border: `1px solid ${isSelected ? "var(--border-accent)" : "var(--border)"}`,
-            }}
+            className={cn("rounded-[16px] p-5 text-left cursor-pointer outline-none")}
+            style={cardStyle}
             onMouseEnter={(e) => {
               if (!isSelected) {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-hover)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background   = "rgba(255,255,255,0.065)";
+                el.style.borderColor  = "rgba(255,255,255,0.15)";
+                el.style.transform    = "translateY(-4px)";
+                el.style.boxShadow    = [
+                  "0 4px 8px rgba(0,0,0,0.35)",
+                  "0 16px 40px rgba(0,0,0,0.25)",
+                  "inset 0 1px 0 rgba(255,255,255,0.10)",
+                ].join(", ");
               }
             }}
             onMouseLeave={(e) => {
               if (!isSelected) {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+                const el = e.currentTarget as HTMLElement;
+                el.style.background   = "rgba(255,255,255,0.04)";
+                el.style.borderColor  = "rgba(255,255,255,0.09)";
+                el.style.transform    = "";
+                el.style.boxShadow    = [
+                  "0 2px 4px rgba(0,0,0,0.30)",
+                  "0 8px 24px rgba(0,0,0,0.20)",
+                  "inset 0 1px 0 rgba(255,255,255,0.07)",
+                ].join(", ");
               }
             }}
           >

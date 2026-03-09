@@ -4,6 +4,7 @@ import { useUserPosition } from "@/hooks/useUserPosition";
 import { STRATEGIES } from "@/constants/protocols";
 import { WithdrawModal } from "./WithdrawModal";
 import { Skeleton } from "@/components/ui/skeleton";
+import { GLASS_BASE, applyGlassHover, resetGlassHover } from "@/components/ui/card";
 
 interface PositionCardProps {
   userAddress: string;
@@ -34,10 +35,7 @@ export function PositionCard({ userAddress }: PositionCardProps) {
 
   if (isLoading) {
     return (
-      <div
-        className="rounded-[16px] p-[26px] space-y-4"
-        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
-      >
+      <div className="rounded-[16px] p-[26px] space-y-4" style={{ ...GLASS_BASE }}>
         <Skeleton className="h-5 w-24" />
         <Skeleton className="h-10 w-full" />
         <Skeleton className="h-10 w-full" />
@@ -50,12 +48,9 @@ export function PositionCard({ userAddress }: PositionCardProps) {
     return (
       <div
         className="rounded-[16px] p-[26px] flex flex-col items-center justify-center min-h-[14rem]"
-        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+        style={{ ...GLASS_BASE }}
       >
-        <p
-          className="font-mono text-[13px] text-center"
-          style={{ color: "var(--text-muted)" }}
-        >
+        <p className="font-mono text-[13px] text-center" style={{ color: "var(--text-muted)" }}>
           No active position
         </p>
       </div>
@@ -67,10 +62,11 @@ export function PositionCard({ userAddress }: PositionCardProps) {
   return (
     <>
       <div
-        className="rounded-[16px] p-[26px] transition-all duration-[180ms]"
-        style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+        className="rounded-[16px] p-[26px]"
+        style={{ ...GLASS_BASE }}
+        onMouseEnter={(e) => applyGlassHover(e.currentTarget)}
+        onMouseLeave={(e) => resetGlassHover(e.currentTarget)}
       >
-        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-syne font-bold text-[15px]" style={{ color: "var(--text)" }}>
             Your Position
@@ -83,38 +79,31 @@ export function PositionCard({ userAddress }: PositionCardProps) {
           </span>
         </div>
 
-        {/* Metrics */}
         <div className="grid grid-cols-2 gap-5 mb-6">
-          <Metric label="Deposited" value={`${position.sbtcDeposited.toFixed(6)} sBTC`} />
-          <Metric
-            label="ysBTC Shares"
-            value={position.ysBtcShares.toFixed(6)}
-            valueColor="var(--accent)"
-          />
-          <Metric
-            label="Strategy APY"
-            value={strategy.expectedAPY}
-            valueColor="var(--green)"
-          />
-          <Metric label="Since Block" value={`#${position.depositBlock}`} />
+          <Metric label="Deposited"     value={`${position.sbtcDeposited.toFixed(6)} sBTC`} />
+          <Metric label="ysBTC Shares"  value={position.ysBtcShares.toFixed(6)} valueColor="var(--accent)" />
+          <Metric label="Strategy APY"  value={strategy.expectedAPY}             valueColor="var(--green)" />
+          <Metric label="Since Block"   value={`#${position.depositBlock}`} />
         </div>
 
-        {/* Withdraw */}
         <button
           onClick={() => setWithdrawOpen(true)}
-          className="w-full py-3 rounded-[11px] border font-syne font-bold text-[14px] transition-all duration-[180ms] active:scale-[0.97]"
+          className="w-full py-3 rounded-[11px] font-syne font-bold text-[14px] active:scale-[0.97]"
           style={{
-            background: "transparent",
-            borderColor: "var(--border)",
-            color: "var(--text-2)",
+            background:  "transparent",
+            border:      "1.5px solid rgba(255,255,255,0.18)",
+            color:       "#edecf2",
+            transition:  "all 0.18s ease",
           }}
           onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border-hover)";
-            (e.currentTarget as HTMLButtonElement).style.color = "var(--text)";
+            const el = e.currentTarget;
+            el.style.background  = "rgba(255,255,255,0.05)";
+            el.style.borderColor = "rgba(255,255,255,0.28)";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
-            (e.currentTarget as HTMLButtonElement).style.color = "var(--text-2)";
+            const el = e.currentTarget;
+            el.style.background  = "transparent";
+            el.style.borderColor = "rgba(255,255,255,0.18)";
           }}
         >
           Withdraw

@@ -36,7 +36,7 @@ export function Navbar() {
         <span className="font-syne font-[800] text-[20px]" style={{ color: "var(--text)" }}>
           Stack
         </span>
-        <span className="font-syne font-[800] text-[20px]" style={{ color: "var(--accent)" }}>
+        <span className="font-syne font-[800] text-[20px]" style={{ color: "#f7931a" }}>
           Yield
         </span>
       </Link>
@@ -60,13 +60,15 @@ export function Navbar() {
         {blockHeight !== undefined && (
           <div
             className={cn(
-              "font-mono text-[11px] px-[9px] py-[3px] rounded-[6px] border transition-colors duration-[180ms]",
+              "font-mono text-[11px] px-[9px] py-[3px] rounded-[6px] transition-colors duration-[180ms]",
               flash ? "block-flash" : ""
             )}
             style={{
-              color: flash ? "var(--accent)" : "var(--text-muted)",
-              background: "var(--surface-2)",
-              borderColor: "var(--border)",
+              color:                flash ? "#f7931a" : "var(--text-muted)",
+              background:           "rgba(255,255,255,0.04)",
+              backdropFilter:       "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)",
+              border:               "1px solid rgba(255,255,255,0.08)",
             }}
           >
             #{blockHeight.toLocaleString()}
