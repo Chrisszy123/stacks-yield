@@ -38,6 +38,7 @@ export default function RootLayout({
       <body
         className={`${syne.variable} ${dmSans.variable} ${dmMono.variable} antialiased`}
         style={{ backgroundColor: "var(--bg)", color: "var(--text)" }}
+        suppressHydrationWarning
       >
         {/* Background atmosphere — two barely-visible radial glows */}
         <div
