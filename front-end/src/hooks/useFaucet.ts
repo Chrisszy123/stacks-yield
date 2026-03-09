@@ -5,22 +5,24 @@ import { executeContractCall, openContractCall } from "@/lib/contract-utils";
 import { CONTRACTS } from "@/constants/contracts";
 import { toast } from "sonner";
 
-export function useWithdraw() {
-  const { isDevnet, devnetWallet, isConnected } = useWallet();
+const DEFAULT_FAUCET_AMOUNT = 1; // 1 sBTC
+
+export function useFaucet() {
+  const { isDevnet, devnetWallet, isConnected, address } = useWallet();
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: async ({ ysBtcAmount }: { ysBtcAmount: number }) => {
-      if (!isConnected) throw new Error("Wallet not connected");
+    mutationFn: async (sbtcAmount: number = DEFAULT_FAUCET_AMOUNT) => {
+      if (!isConnected || !address) throw new Error("Wallet not connected");
 
-      const [contractAddress, contractName] = CONTRACTS.aggregator.split(".");
-      const sharesInUnits = Math.floor(ysBtcAmount * 1e8);
+      const [contractAddress, contractName] = CONTRACTS.mockSbtc.split(".");
+      const amountInSats = Math.floor(sbtcAmount * 1e8);
 
       const txOptions = {
         contractAddress,
         contractName,
-        functionName: "withdraw",
-        functionArgs: [uintCV(sharesInUnits)],
+        functionName: "faucet",
+        functionArgs: [uintCV(amountInSats)],
         postConditionMode: PostConditionMode.Allow,
       };
 
@@ -31,20 +33,19 @@ export function useWithdraw() {
         return { txid: result.txid || "" };
       }
     },
-    onSuccess: (data) => {
-      toast.success("Withdrawal submitted!", {
+    onSuccess: (data, amount) => {
+      toast.success(`Faucet: ${amount ?? DEFAULT_FAUCET_AMOUNT} mock sBTC minted`, {
         description: `TX: ${data.txid.slice(0, 12)}...`,
       });
-      queryClient.invalidateQueries({ queryKey: ["vault-stats"] });
-      queryClient.invalidateQueries({ queryKey: ["user-position"] });
+      queryClient.invalidateQueries({ queryKey: ["sbtcBalance"] });
     },
     onError: (error: Error) => {
-      toast.error("Withdrawal failed", { description: error.message });
+      toast.error("Faucet failed", { description: error.message });
     },
   });
 
   return {
-    withdraw: (ysBtcAmount: number) => mutation.mutateAsync({ ysBtcAmount }),
+    drip: (amount?: number) => mutation.mutateAsync(amount),
     isLoading: mutation.isPending,
   };
 }

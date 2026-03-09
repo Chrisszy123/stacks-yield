@@ -22,7 +22,7 @@
 (define-read-only (get-total-supply) (ok (ft-get-supply mock-sbtc)))
 (define-read-only (get-token-uri) (ok none))
 
-;; Devnet faucet — only for testing
+;; Devnet faucet - only for testing
 (define-public (faucet (amount uint))
   (ft-mint? mock-sbtc amount tx-sender)
 )

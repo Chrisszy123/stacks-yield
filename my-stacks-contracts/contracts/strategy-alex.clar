@@ -1,5 +1,5 @@
 ;; strategy-alex.clar
-;; Adapter for ALEX DeFi — yield farming with ALEX rewards
+;; Adapter for ALEX DeFi - yield farming with ALEX rewards
 
 (define-constant ERR-NOT-AUTHORIZED (err u400))
 (define-data-var vault-principal principal tx-sender)

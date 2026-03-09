@@ -1,14 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useWallet } from "@/components/providers/wallet-provider";
-import { ConnectButton } from "@/components/wallet/connect-button";
-import { WalletDropdown } from "@/components/wallet/wallet-dropdown";
+import { WalletButton } from "@/components/WalletButton";
 import { useCurrentBtcBlock } from "@/hooks/chainQueries";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
-  const { isConnected } = useWallet();
   const { data: blockHeight } = useCurrentBtcBlock();
   const [flash, setFlash] = useState(false);
   const prevBlock = useRef<number | null>(null);
@@ -76,7 +73,7 @@ export function Navbar() {
         )}
 
         {/* Wallet */}
-        {isConnected ? <WalletDropdown /> : <ConnectButton />}
+        <WalletButton />
       </div>
     </nav>
   );

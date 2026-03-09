@@ -3,6 +3,9 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { StrategySelector } from "./StrategySelector";
 import { useDeposit } from "@/hooks/useDeposit";
+import { useFaucet } from "@/hooks/useFaucet";
+import { useSbtcBalance } from "@/hooks/balanceQueries";
+import { useWallet } from "@/components/providers/wallet-provider";
 import { StrategyId } from "@/constants/protocols";
 import { modalVariants, backdropVariants } from "@/lib/motion";
 
@@ -34,6 +37,9 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
   const [amount, setAmount]     = useState("");
   const [strategy, setStrategy] = useState<StrategyId>(1);
   const { deposit, isLoading }  = useDeposit();
+  const { address, isDevnet }   = useWallet();
+  const { data: sbtcBalance }   = useSbtcBalance(address ?? null);
+  const { drip, isLoading: faucetLoading } = useFaucet();
 
   const handleDeposit = async () => {
     const num = Number(amount);
@@ -97,6 +103,38 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
               </button>
             </div>
 
+            {/* Balance + faucet */}
+            <div className="mb-5 flex items-center justify-between">
+              <p className="font-mono text-[12px]" style={{ color: "var(--text-2)" }}>
+                Balance:{" "}
+                <span style={{ color: sbtcBalance ? "var(--text)" : "var(--red)" }}>
+                  {sbtcBalance !== undefined ? `${sbtcBalance} sBTC` : "—"}
+                </span>
+              </p>
+              {isDevnet && (
+                <button
+                  onClick={() => drip(1)}
+                  disabled={faucetLoading}
+                  className="font-mono text-[11px] px-[10px] py-[4px] rounded-[8px] border transition-all duration-[180ms] disabled:opacity-40 disabled:cursor-not-allowed"
+                  style={{
+                    background: "transparent",
+                    borderColor: "rgba(61,214,140,0.3)",
+                    color: "var(--green)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(61,214,140,0.6)";
+                    (e.currentTarget as HTMLButtonElement).style.background = "rgba(61,214,140,0.06)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(61,214,140,0.3)";
+                    (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                  }}
+                >
+                  {faucetLoading ? "minting…" : "Faucet +1 sBTC"}
+                </button>
+              )}
+            </div>
+
             {/* Amount input */}
             <div className="mb-7">
               <label
@@ -140,9 +178,27 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
                     }
                   }}
                 />
-                <span className="font-mono text-[13px] ml-2" style={{ color: "var(--text-muted)" }}>
-                  sBTC
-                </span>
+                <div className="flex items-center gap-2 ml-2">
+                  <span className="font-mono text-[13px]" style={{ color: "var(--text-muted)" }}>
+                    sBTC
+                  </span>
+                  {sbtcBalance !== undefined && sbtcBalance > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setAmount(String(sbtcBalance))}
+                      className="font-mono text-[10px] uppercase px-[6px] py-[2px] rounded-[4px] transition-colors duration-[180ms]"
+                      style={{ color: "#f7931a", background: "rgba(247,147,26,0.10)" }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(247,147,26,0.20)";
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLButtonElement).style.background = "rgba(247,147,26,0.10)";
+                      }}
+                    >
+                      max
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 

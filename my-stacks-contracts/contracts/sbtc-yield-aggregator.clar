@@ -1,6 +1,6 @@
 ;; sbtc-yield-aggregator.clar
-;; StackYield — sBTC Yield Aggregator Vault
-;; Deposits sBTC → mints ysBTC shares → routes to strategies → earns yield
+;; StackYield - sBTC Yield Aggregator Vault
+;; Deposits sBTC -> mints ysBTC shares -> routes to strategies -> earns yield
 
 ;; ============================================================
 ;; CONSTANTS & ERRORS

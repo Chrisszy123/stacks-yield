@@ -1,5 +1,5 @@
 ;; strategy-zest.clar
-;; Adapter for Zest Protocol — supply sBTC and earn Bitcoin yield
+;; Adapter for Zest Protocol - supply sBTC and earn Bitcoin yield
 
 (define-constant ERR-NOT-AUTHORIZED (err u200))
 (define-data-var vault-principal principal tx-sender)

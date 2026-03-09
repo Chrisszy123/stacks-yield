@@ -4,4 +4,49 @@ network: devnet
 stacks-node: http://localhost:20443
 bitcoin-node: http://devnet:devnet@localhost:18443
 plan:
-  batches: []
+  batches:
+  - id: 0
+    transactions:
+    - transaction-type: contract-publish
+      contract-name: mock-sbtc
+      expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+      cost: 9630
+      path: contracts/mock-sbtc.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: ysbtc-token
+      expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+      cost: 17960
+      path: contracts/ysbtc-token.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: sbtc-yield-aggregator
+      expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+      cost: 77850
+      path: contracts/sbtc-yield-aggregator.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: strategy-alex
+      expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+      cost: 7120
+      path: contracts/strategy-alex.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: strategy-bitflow
+      expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+      cost: 7430
+      path: contracts/strategy-bitflow.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: strategy-zest
+      expected-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+      cost: 9910
+      path: contracts/strategy-zest.clar
+      anchor-block-only: true
+      clarity-version: 2
+    epoch: '2.5'

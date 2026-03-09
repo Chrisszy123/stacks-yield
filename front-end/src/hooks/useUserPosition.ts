@@ -1,23 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { cvToJSON, hexToCV, serializeCV, standardPrincipalCV } from "@stacks/transactions";
-import { getStacksUrl } from "@/lib/stacks-api";
+import { callReadOnly } from "@/lib/stacks-api";
 import { CONTRACTS } from "@/constants/contracts";
-
-async function callReadOnly(
-  contractAddress: string,
-  contractName: string,
-  functionName: string,
-  sender: string,
-  args: string[] = []
-) {
-  const url = `${getStacksUrl()}/v2/contracts/call-read/${contractAddress}/${contractName}/${functionName}`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sender, arguments: args }),
-  });
-  return response.json();
-}
 
 export function useUserPosition(userAddress: string | null) {
   return useQuery({
@@ -40,7 +24,6 @@ export function useUserPosition(userAddress: string | null) {
       if (!data?.okay || !data?.result) return null;
 
       const json = cvToJSON(hexToCV(data.result));
-      // get-user-position returns an optional tuple
       if (!json.value || json.type === "none") return null;
 
       const d = json.value?.value ?? json.value;

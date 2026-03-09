@@ -5,17 +5,35 @@ authors = []
 telemetry = false
 cache_dir = "./.cache"
 
-# [contracts.counter]
-# path = "contracts/counter.clar"
-# epoch = "latest"
+[contracts.mock-sbtc]
+path = "contracts/mock-sbtc.clar"
+clarity_version = 2
+epoch = "2.5"
 
-# Check-checker settings:
-# trusted_sender: if true, inputs are trusted after tx_sender has been checked.
-# trusted_caller: if true, inputs are trusted after contract-caller has been checked.
-# callee_filter: if true, untrusted data may be passed into a private function without a
-# warning, if it gets checked inside. This check will also propagate up to the
-# caller.
-# More informations: https://www.hiro.so/blog/new-safety-checks-in-clarinet
+[contracts.ysbtc-token]
+path = "contracts/ysbtc-token.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.strategy-zest]
+path = "contracts/strategy-zest.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.strategy-bitflow]
+path = "contracts/strategy-bitflow.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.strategy-alex]
+path = "contracts/strategy-alex.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.sbtc-yield-aggregator]
+path = "contracts/sbtc-yield-aggregator.clar"
+clarity_version = 2
+epoch = "2.5"
 
 [repl.analysis]
 passes = ["check_checker"]

@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useWallet } from "@/components/providers/wallet-provider";
-import { ConnectButton } from "@/components/wallet/connect-button";
+import { WalletButton } from "@/components/WalletButton";
+import { DevnetWalletSelector } from "@/components/wallet/devnet-wallet-selector";
 import { Navbar } from "@/components/navbar";
 import { VaultStats } from "@/components/VaultStats";
 import { PositionCard } from "@/components/PositionCard";
@@ -129,18 +130,51 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 function EmptyPositionState() {
+  const { isDevnet } = useWallet();
+
   return (
     <div
-      className="rounded-[16px] p-[26px] flex flex-col items-center justify-center min-h-[14rem]"
+      className="rounded-[16px] p-[26px] flex flex-col items-center justify-center min-h-[14rem] gap-5"
       style={{ ...GLASS_BASE }}
     >
       <p
-        className="font-mono text-[13px] text-center mb-5"
+        className="font-mono text-[13px] text-center"
         style={{ color: "var(--text-muted)" }}
       >
         Connect your wallet to view your position
       </p>
-      <ConnectButton />
+
+      {/* Primary — real Leather wallet connect */}
+      <WalletButton />
+
+      {/* Secondary — Clarinet pre-funded test wallets, only on devnet */}
+      {isDevnet && (
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-3 w-full">
+            <span
+              className="flex-1 border-t"
+              style={{ borderColor: "var(--border)" }}
+            />
+            <span
+              className="font-mono text-[10px] uppercase tracking-[0.1em]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              or use a test wallet
+            </span>
+            <span
+              className="flex-1 border-t"
+              style={{ borderColor: "var(--border)" }}
+            />
+          </div>
+          <DevnetWalletSelector />
+          <p
+            className="font-mono text-[10px] text-center"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Pre-funded Clarinet devnet accounts
+          </p>
+        </div>
+      )}
     </div>
   );
 }

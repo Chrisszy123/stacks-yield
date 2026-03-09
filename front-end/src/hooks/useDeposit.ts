@@ -30,7 +30,7 @@ export function useDeposit() {
         postConditionMode: PostConditionMode.Allow,
       };
 
-      if (isDevnet) {
+      if (isDevnet && devnetWallet) {
         return await executeContractCall(txOptions, devnetWallet);
       } else {
         const result = await openContractCall(txOptions);

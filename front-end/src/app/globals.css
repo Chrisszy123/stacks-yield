@@ -136,6 +136,32 @@ a {
   100% { transform: translate(0px, 0px); }
 }
 
+/* ─── Wallet pulse dot ────────────────────────────────────────────────── */
+@keyframes walletPing {
+  75%, 100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.wallet-pulse-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--green);
+  opacity: 0.75;
+  animation: walletPing 1.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.wallet-pulse-dot {
+  position: relative;
+  display: inline-flex;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--green);
+}
+
 /* ─── Tailwind base overrides ─────────────────────────────────────────── */
 @layer base {
   * {

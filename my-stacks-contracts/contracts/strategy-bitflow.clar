@@ -1,5 +1,5 @@
 ;; strategy-bitflow.clar
-;; Adapter for Bitflow DEX — provide liquidity to sBTC/STX pools
+;; Adapter for Bitflow DEX - provide liquidity to sBTC/STX pools
 
 (define-constant ERR-NOT-AUTHORIZED (err u300))
 (define-data-var vault-principal principal tx-sender)

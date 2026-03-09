@@ -8,7 +8,8 @@
 (define-constant err-not-aggregator (err u101))
 
 ;; Only the aggregator contract can mint/burn
-(define-data-var aggregator-contract principal contract-owner)
+;; Default to the aggregator contract so no post-deploy init call is needed
+(define-data-var aggregator-contract principal 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc-yield-aggregator)
 
 (define-public (set-aggregator (new-aggregator principal))
   (begin
@@ -17,16 +18,17 @@
   )
 )
 
+;; contract-caller is the direct calling contract (the aggregator), not the end user
 (define-public (mint (amount uint) (recipient principal))
   (begin
-    (asserts! (is-eq tx-sender (var-get aggregator-contract)) err-not-aggregator)
+    (asserts! (is-eq contract-caller (var-get aggregator-contract)) err-not-aggregator)
     (ft-mint? ysbtc amount recipient)
   )
 )
 
 (define-public (burn (amount uint) (owner principal))
   (begin
-    (asserts! (is-eq tx-sender (var-get aggregator-contract)) err-not-aggregator)
+    (asserts! (is-eq contract-caller (var-get aggregator-contract)) err-not-aggregator)
     (ft-burn? ysbtc amount owner)
   )
 )
