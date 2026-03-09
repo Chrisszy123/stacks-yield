@@ -55,23 +55,25 @@ export function WithdrawModal({ isOpen, onClose, userAddress }: WithdrawModalPro
           {/* Backdrop */}
           <motion.div
             key="backdrop"
-            variants={backdropVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
             className="fixed inset-0 z-50"
             style={{ background: "rgba(4,4,10,0.85)" }}
             onClick={onClose}
           />
 
-          {/* Modal shell */}
+          {/* Centering shell — flex, no transform */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          {/* Animated modal */}
           <motion.div
             key="modal"
             variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-[16px] p-8"
+            className="w-full max-w-lg rounded-[16px] p-8 pointer-events-auto"
             style={MODAL_STYLE}
           >
             {/* Header */}
@@ -212,6 +214,7 @@ export function WithdrawModal({ isOpen, onClose, userAddress }: WithdrawModalPro
               {isLoading ? "Awaiting signature..." : "Withdraw sBTC"}
             </motion.button>
           </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
