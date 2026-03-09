@@ -16,9 +16,11 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
           className
         )}
         style={{
-          background: "var(--surface-2)",
-          border: "1.5px solid var(--border)",
-          color: "var(--text)",
+          background:  "var(--surface-2)",
+          borderWidth: "1.5px",
+          borderStyle: "solid",
+          borderColor: "var(--border)",
+          color:       "var(--text)",
         }}
         onFocus={(e) => {
           e.currentTarget.style.borderColor = "var(--border-accent)";

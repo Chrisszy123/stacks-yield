@@ -91,7 +91,9 @@ export function PositionCard({ userAddress }: PositionCardProps) {
           className="w-full py-3 rounded-[11px] font-syne font-bold text-[14px] active:scale-[0.97]"
           style={{
             background:  "transparent",
-            border:      "1.5px solid rgba(255,255,255,0.18)",
+            borderWidth: "1.5px",
+            borderStyle: "solid",
+            borderColor: "rgba(255,255,255,0.18)",
             color:       "#edecf2",
             transition:  "all 0.18s ease",
           }}

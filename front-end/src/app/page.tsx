@@ -171,7 +171,9 @@ export default function HomePage() {
                 className="inline-flex items-center justify-center font-syne font-[800] text-[15px] tracking-[0.01em] rounded-[11px] px-8 py-[14px] active:scale-[0.97]"
                 style={{
                   background:  "transparent",
-                  border:      "1.5px solid rgba(255,255,255,0.18)",
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "rgba(255,255,255,0.18)",
                   color:       "#edecf2",
                   transition:  "all 0.18s ease",
                 }}

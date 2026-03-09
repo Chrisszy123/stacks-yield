@@ -108,9 +108,11 @@ export function DepositModal({ isOpen, onClose }: DepositModalProps) {
               <div
                 className="deposit-amount-wrap flex items-center rounded-[11px] px-4"
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border:     "1.5px solid rgba(255,255,255,0.08)",
-                  transition: "border-color 0.18s ease, box-shadow 0.18s ease",
+                  background:  "rgba(255,255,255,0.04)",
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "rgba(255,255,255,0.08)",
+                  transition:  "border-color 0.18s ease, box-shadow 0.18s ease",
                 }}
               >
                 <span className="font-mono text-[18px] mr-3" style={{ color: "#f7931a" }}>₿</span>

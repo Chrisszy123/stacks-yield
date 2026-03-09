@@ -124,9 +124,11 @@ export function WithdrawModal({ isOpen, onClose, userAddress }: WithdrawModalPro
               <div
                 className="withdraw-amount-wrap flex items-center rounded-[11px] px-4"
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border:     "1.5px solid rgba(255,255,255,0.08)",
-                  transition: "border-color 0.18s ease, box-shadow 0.18s ease",
+                  background:  "rgba(255,255,255,0.04)",
+                  borderWidth: "1.5px",
+                  borderStyle: "solid",
+                  borderColor: "rgba(255,255,255,0.08)",
+                  transition:  "border-color 0.18s ease, box-shadow 0.18s ease",
                 }}
               >
                 <input
@@ -192,7 +194,9 @@ export function WithdrawModal({ isOpen, onClose, userAddress }: WithdrawModalPro
               className="w-full py-[14px] rounded-[11px] font-syne font-[800] text-[15px] tracking-[0.01em] disabled:opacity-40 disabled:cursor-not-allowed"
               style={{
                 background:  "transparent",
-                border:      "1.5px solid rgba(255,255,255,0.18)",
+                borderWidth: "1.5px",
+                borderStyle: "solid",
+                borderColor: "rgba(255,255,255,0.18)",
                 color:       "#edecf2",
                 transition:  "all 0.18s ease",
               }}

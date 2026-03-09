@@ -5,7 +5,9 @@ const GLASS_BASE: React.CSSProperties = {
   background:              "rgba(255,255,255,0.04)",
   backdropFilter:          "blur(16px)",
   WebkitBackdropFilter:    "blur(16px)",
-  border:                  "1px solid rgba(255,255,255,0.09)",
+  borderWidth:             "1px",
+  borderStyle:             "solid",
+  borderColor:             "rgba(255,255,255,0.09)",
   boxShadow:               [
     "0 2px 4px rgba(0,0,0,0.30)",
     "0 8px 24px rgba(0,0,0,0.20)",
