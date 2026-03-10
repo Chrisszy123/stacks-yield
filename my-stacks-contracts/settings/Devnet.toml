@@ -84,7 +84,7 @@ sbtc_balance = 1_000_000_000
 
 [devnet]
 disable_stacks_explorer = false
-disable_stacks_api = false
+disable_stacks_api = true
 # disable_postgres = false
 # disable_bitcoin_explorer = true
 # working_dir = "tmp/devnet"
@@ -100,7 +100,7 @@ disable_stacks_api = false
 # bitcoin_node_rpc_port = 18443
 # bitcoin_node_username = "devnet"
 # bitcoin_node_password = "devnet"
-# bitcoin_controller_block_time = 30_000
+# bitcoin_controller_block_time = 60_000
 # stacks_node_rpc_port = 20443
 # stacks_node_p2p_port = 20444
 # stacks_api_port = 3999
