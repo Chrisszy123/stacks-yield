@@ -1,0 +1,52 @@
+id: 0
+name: Testnet deployment
+network: testnet
+stacks-node: https://api.testnet.hiro.so
+bitcoin-node: http://blockstack:blockstacksystem@bitcoind.testnet.stacks.co:18332
+plan:
+  batches:
+  - id: 0
+    transactions:
+    - transaction-type: contract-publish
+      contract-name: mock-sbtc
+      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
+      cost: 9630
+      path: contracts/mock-sbtc.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: ysbtc-token
+      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
+      cost: 17960
+      path: contracts/ysbtc-token.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: sbtc-yield-aggregator
+      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
+      cost: 77850
+      path: contracts/sbtc-yield-aggregator.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: strategy-alex
+      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
+      cost: 7120
+      path: contracts/strategy-alex.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: strategy-bitflow
+      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
+      cost: 7430
+      path: contracts/strategy-bitflow.clar
+      anchor-block-only: true
+      clarity-version: 2
+    - transaction-type: contract-publish
+      contract-name: strategy-zest
+      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
+      cost: 9910
+      path: contracts/strategy-zest.clar
+      anchor-block-only: true
+      clarity-version: 2
+    epoch: '2.5'
