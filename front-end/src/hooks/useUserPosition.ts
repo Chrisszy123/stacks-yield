@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { cvToJSON, hexToCV, serializeCV, standardPrincipalCV } from "@stacks/transactions";
+import { cvToJSON, hexToCV, cvToHex, Cl } from "@stacks/transactions";
 import { callReadOnly } from "@/lib/stacks-api";
 import { CONTRACTS } from "@/constants/contracts";
 
@@ -9,9 +9,7 @@ export function useUserPosition(userAddress: string | null) {
     enabled: !!userAddress,
     queryFn: async () => {
       const [contractAddress, contractName] = CONTRACTS.aggregator.split(".");
-      const principalArg = Buffer.from(
-        serializeCV(standardPrincipalCV(userAddress!))
-      ).toString("hex");
+      const principalArg = cvToHex(Cl.principal(userAddress!));
 
       const data = await callReadOnly(
         contractAddress,

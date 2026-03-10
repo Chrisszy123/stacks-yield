@@ -86,7 +86,7 @@ export const useSbtcBalance = (
       if (error) throw new Error("Error fetching sBTC balance");
 
       const sbtcEntry = data.results?.find((ft) =>
-        ft.token.includes("sbtc-token")
+        ft.token.includes(CONTRACTS.mockSbtc)
       );
       if (!sbtcEntry) return 0;
       return satsToSbtc(Number(sbtcEntry.balance));
