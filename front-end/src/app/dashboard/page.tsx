@@ -12,6 +12,7 @@ import { DepositModal } from "@/components/DepositModal";
 import { HowItWorksIllustration } from "@/components/HowItWorksIllustration";
 import { pageVariants, itemVariants } from "@/lib/motion";
 import { GLASS_BASE } from "@/components/ui/card";
+import { Footer } from "@/components/Footer";
 
 export default function DashboardPage() {
   const [depositOpen, setDepositOpen] = useState(false);
@@ -114,6 +115,8 @@ export default function DashboardPage() {
       </motion.div>
 
       <DepositModal isOpen={depositOpen} onClose={() => setDepositOpen(false)} />
+
+      <Footer />
     </div>
   );
 }
