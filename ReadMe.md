@@ -1,6 +1,6 @@
 # StackYield
 
-**sBTC Yield Aggregator — Built on Stacks, Secured by Bitcoin**
+**sBTC Yield Aggregator: Built on Stacks, Secured by Bitcoin**
 
 StackYield is a non-custodial yield aggregator that routes sBTC across Stacks DeFi protocols to maximize Bitcoin-native yield. Users deposit sBTC, choose a risk strategy, and receive `ysBTC` receipt tokens representing their vault share. Yield accrues automatically. Withdraw anytime by burning `ysBTC`.
 
