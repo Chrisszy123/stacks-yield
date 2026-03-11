@@ -1,5 +1,5 @@
 import { connect, disconnect, isConnected, getLocalStorage, request } from '@stacks/connect';
-import type { ClarityValue } from '@stacks/transactions';
+import type { ClarityValue, PostCondition } from '@stacks/transactions';
 
 export async function walletConnect() {
   return await connect();
@@ -30,7 +30,7 @@ export interface ContractCallParams {
   contractName: string;
   functionName: string;
   functionArgs: ClarityValue[];
-  postConditions?: unknown[];
+  postConditions?: (string | PostCondition)[];
   postConditionMode?: 'allow' | 'deny';
 }
 

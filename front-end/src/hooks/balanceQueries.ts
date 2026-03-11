@@ -3,7 +3,7 @@ import { ustxToStx, satsToSbtc } from "@/lib/currency-utils";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { DEVNET_NODE_RPC_URL } from "@/constants/devnet";
 import { CONTRACTS } from "@/constants/contracts";
-import { Cl, cvToHex, hexToCV } from "@stacks/transactions";
+import { Cl, ClarityType, cvToHex, hexToCV } from "@stacks/transactions";
 
 const isDevnet = () => process.env.NEXT_PUBLIC_STACKS_NETWORK === "devnet";
 
@@ -74,7 +74,7 @@ export const useSbtcBalance = (
 
         // Result is (ok uint) — unwrap the ResponseOK then read the UInt
         const cv = hexToCV(data.result);
-        if (cv.type !== 7) return 0; // 7 = ResponseOkCV
+        if (cv.type !== ClarityType.ResponseOk) return 0;
         const inner = (cv as { value: { value: bigint } }).value;
         return satsToSbtc(Number(inner.value));
       }

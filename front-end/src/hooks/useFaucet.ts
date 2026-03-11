@@ -45,7 +45,7 @@ export function useFaucet() {
   });
 
   return {
-    drip: (amount?: number) => mutation.mutateAsync(amount),
+    drip: (amount?: number) => mutation.mutateAsync(amount ?? DEFAULT_FAUCET_AMOUNT),
     isLoading: mutation.isPending,
   };
 }
