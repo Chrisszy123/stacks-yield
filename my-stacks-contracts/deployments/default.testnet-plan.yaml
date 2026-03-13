@@ -24,7 +24,7 @@ plan:
     - transaction-type: contract-publish
       contract-name: sbtc-yield-aggregator
       expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 77850
+      cost: 81190
       path: contracts/sbtc-yield-aggregator.clar
       anchor-block-only: true
       clarity-version: 2

@@ -112,16 +112,19 @@
     (var-set total-sbtc-deposited (+ (var-get total-sbtc-deposited) sbtc-amount))
     (var-set total-ysbtc-supply (+ (var-get total-ysbtc-supply) shares))
 
-    ;; Record user deposit
-    (map-set user-deposits
-      { user: caller }
-      {
-        ysbtc-shares: shares,
-        sbtc-deposited: sbtc-amount,
-        strategy: strategy,
-        deposit-block: block-height,
-        last-claim-block: block-height
-      }
+    ;; Record user deposit (merge with existing if user has prior deposits)
+    (let ((existing (default-to { ysbtc-shares: u0, sbtc-deposited: u0, strategy: u0, deposit-block: u0, last-claim-block: u0 }
+                    (map-get? user-deposits { user: caller }))))
+      (map-set user-deposits
+        { user: caller }
+        {
+          ysbtc-shares: (+ (get ysbtc-shares existing) shares),
+          sbtc-deposited: (+ (get sbtc-deposited existing) sbtc-amount),
+          strategy: strategy,
+          deposit-block: block-height,
+          last-claim-block: block-height
+        }
+      )
     )
 
     ;; Update strategy allocation
