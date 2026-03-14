@@ -3,10 +3,10 @@ import { callReadOnly } from "@/lib/stacks-api";
 import { cvToJSON, hexToCV, principalCV } from "@stacks/transactions";
 import { DEPLOYER_ADDRESS } from "@/constants/contracts";
 
-function cvToHex(cv: { type: number }): string {
-  const serialized = (cv as any).serialize
-    ? (cv as any).serialize()
-    : require("@stacks/transactions").serializeCV(cv);
+import { serializeCV } from "@stacks/transactions";
+
+function cvToHex(cv: Parameters<typeof serializeCV>[0]): string {
+  const serialized = serializeCV(cv);
   return Buffer.from(serialized).toString("hex");
 }
 

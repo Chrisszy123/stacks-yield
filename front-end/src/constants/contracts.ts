@@ -1,4 +1,4 @@
-import { devnetWallets } from "@/lib/devnet-wallet-context";
+import { devnetWallets } from "@/lib/devnet-wallets";
 
 const DEPLOYER_ADDRESS =
   process.env.NEXT_PUBLIC_STACKS_NETWORK === "devnet"
