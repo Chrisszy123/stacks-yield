@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const PORT = parseInt(process.env.MOLBOT_SERVICE_PORT || "3001");
+const PORT = parseInt(process.env.PORT || process.env.MOLBOT_SERVICE_PORT || "3001");
 const KEEPER_ADDRESS = process.env.KEEPER_STX_ADDRESS!;
 const STACKS_API = process.env.STACKS_API_URL || "https://api.testnet.hiro.so";
 const DEPLOYER = process.env.DEPLOYER_ADDRESS!;
