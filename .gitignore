@@ -1,0 +1,41 @@
+# Dependencies — never commit these
+node_modules/
+**/node_modules/
+
+# Environment files — never commit secrets
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+.cache/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Clarinet / Stacks
+**/settings/Mainnet.toml
+**/settings/Testnet.toml
+costs-reports.json
+coverage/
+
+# Keeper — sensitive one-off scripts
+keeper/keygen.mjs
+keeper/decrypt.js
+keeper/logs/
+
+# IDE
+.vscode/
+.idea/
