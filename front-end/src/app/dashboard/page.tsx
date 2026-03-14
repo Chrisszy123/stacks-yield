@@ -10,6 +10,9 @@ import { PositionCard } from "@/components/PositionCard";
 import { ProtocolAPYTable } from "@/components/ProtocolAPYTable";
 import { DepositModal } from "@/components/DepositModal";
 import { HowItWorksIllustration } from "@/components/HowItWorksIllustration";
+import { AgentModeCard } from "@/components/AgentModeCard";
+import { AgentActivityFeed } from "@/components/AgentActivityFeed";
+import { MolbotPanel } from "@/components/MolbotPanel";
 import { pageVariants, itemVariants } from "@/lib/motion";
 import { GLASS_BASE } from "@/components/ui/card";
 import { Footer } from "@/components/Footer";
@@ -102,6 +105,21 @@ export default function DashboardPage() {
           </motion.section>
         </div>
 
+        {/* Agent Mode + Activity Feed */}
+        {isConnected && (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <motion.section variants={itemVariants}>
+              <SectionLabel>AI Agent</SectionLabel>
+              <AgentModeCard />
+            </motion.section>
+
+            <motion.section variants={itemVariants}>
+              <SectionLabel>Agent Activity</SectionLabel>
+              <AgentActivityFeed />
+            </motion.section>
+          </div>
+        )}
+
         {/* How it works */}
         <motion.section variants={itemVariants}>
           <SectionLabel>How it works</SectionLabel>
@@ -111,6 +129,12 @@ export default function DashboardPage() {
           >
             <HowItWorksIllustration />
           </div>
+        </motion.section>
+
+        {/* Molbot Network */}
+        <motion.section variants={itemVariants}>
+          <SectionLabel>x402 Commerce</SectionLabel>
+          <MolbotPanel />
         </motion.section>
       </motion.div>
 

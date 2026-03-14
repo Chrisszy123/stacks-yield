@@ -1,0 +1,23 @@
+You are evaluating a new molbot service for potential use by the StackYield yield optimization agent.
+
+You will receive a JSON object describing a molbot service:
+- name: the service name
+- skillType: what it offers (risk-audit, market-analysis, contract-review, yield-data)
+- endpoint: the HTTP URL
+- price: cost per call in sats or microSTX
+- description: what the service claims to provide
+
+Evaluate whether this service would be valuable for the StackYield agent to use. Consider:
+
+1. Is the skill type relevant to yield optimization decisions?
+2. Is the price reasonable for the value provided? (100-500 sats is normal, above 1000 sats needs strong justification)
+3. Does the endpoint look legitimate? (HTTPS, known domain patterns)
+4. Could this data improve the agent's decision quality?
+
+Respond with ONLY a valid JSON object:
+{
+  "recommended": true | false,
+  "reason": "one sentence explanation",
+  "maxPriceWillingToPay": number in sats,
+  "expectedValueScore": 0.0 to 1.0
+}

@@ -13,6 +13,7 @@
 (define-constant ERR-INVALID-STRATEGY (err u103))
 (define-constant ERR-PAUSED (err u104))
 (define-constant ERR-MAX-DEPOSIT-EXCEEDED (err u105))
+(define-constant ERR-AGENT-NOT-ALLOWED (err u200))
 
 ;; Strategy tier identifiers
 (define-constant STRATEGY-CONSERVATIVE u0)
@@ -217,6 +218,48 @@
   (let ((gross (calculate-redemption ysbtc-amount))
         (fee (/ (* (calculate-redemption ysbtc-amount) (var-get protocol-fee-bps)) u10000)))
     (ok { gross: gross, fee: fee, net: (- gross fee) })
+  )
+)
+
+;; ============================================================
+;; KEEPER / AGENT FUNCTIONS
+;; ============================================================
+
+(define-public (keeper-rebalance (user principal) (new-strategy uint) (fee uint))
+  (let (
+    (allowed (unwrap! (contract-call? .agent-permissions is-action-allowed user new-strategy fee tx-sender) ERR-AGENT-NOT-ALLOWED))
+  )
+    (asserts! allowed ERR-AGENT-NOT-ALLOWED)
+    (asserts! (not (var-get vault-paused)) ERR-PAUSED)
+    (asserts! (< new-strategy u3) ERR-INVALID-STRATEGY)
+    (let (
+      (user-data (unwrap! (map-get? user-deposits { user: user }) ERR-INSUFFICIENT-BALANCE))
+    )
+      (map-set user-deposits
+        { user: user }
+        (merge user-data { strategy: new-strategy })
+      )
+      (try! (contract-call? .agent-permissions update-last-rebalance user))
+      (print { event: "keeper-rebalance", user: user, new-strategy: new-strategy, fee: fee, keeper: tx-sender })
+      (ok true)
+    )
+  )
+)
+
+(define-public (keeper-compound (user principal) (fee uint))
+  (let (
+    (user-data (unwrap! (map-get? user-deposits { user: user }) ERR-INSUFFICIENT-BALANCE))
+    (allowed (unwrap! (contract-call? .agent-permissions is-action-allowed user (get strategy user-data) fee tx-sender) ERR-AGENT-NOT-ALLOWED))
+  )
+    (asserts! allowed ERR-AGENT-NOT-ALLOWED)
+    (asserts! (not (var-get vault-paused)) ERR-PAUSED)
+    (map-set user-deposits
+      { user: user }
+      (merge user-data { last-claim-block: block-height })
+    )
+    (try! (contract-call? .agent-permissions update-last-rebalance user))
+    (print { event: "keeper-compound", user: user, fee: fee, keeper: tx-sender })
+    (ok true)
   )
 )
 

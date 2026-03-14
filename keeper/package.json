@@ -1,0 +1,25 @@
+{
+  "name": "stackyield-keeper",
+  "version": "1.0.0",
+  "description": "StackYield autonomous AI keeper bot with x402 molbot commerce",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "tsx agent-loop.ts",
+    "dev": "tsx watch agent-loop.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@stacks/network": "^7.3.1",
+    "@stacks/transactions": "^7.3.1",
+    "@stacks/wallet-sdk": "^7.2.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.15.17"
+  }
+}

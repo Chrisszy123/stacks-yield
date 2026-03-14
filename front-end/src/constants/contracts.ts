@@ -21,4 +21,7 @@ export const CONTRACTS = {
   strategyZest: `${DEPLOYER_ADDRESS}.strategy-zest`,
   strategyBitflow: `${DEPLOYER_ADDRESS}.strategy-bitflow`,
   strategyAlex: `${DEPLOYER_ADDRESS}.strategy-alex`,
+  agentPermissions: `${DEPLOYER_ADDRESS}.agent-permissions`,
+  molbotRegistry: `${DEPLOYER_ADDRESS}.molbot-registry`,
+  x402Verifier: `${DEPLOYER_ADDRESS}.x402-verifier`,
 } as const;

@@ -30,6 +30,21 @@ path = "contracts/strategy-alex.clar"
 clarity_version = 2
 epoch = "2.5"
 
+[contracts.agent-permissions]
+path = "contracts/agent-permissions.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.molbot-registry]
+path = "contracts/molbot-registry.clar"
+clarity_version = 2
+epoch = "2.5"
+
+[contracts.x402-verifier]
+path = "contracts/x402-verifier.clar"
+clarity_version = 2
+epoch = "2.5"
+
 [contracts.sbtc-yield-aggregator]
 path = "contracts/sbtc-yield-aggregator.clar"
 clarity_version = 2
