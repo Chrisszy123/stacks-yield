@@ -13,6 +13,8 @@ dotenv.config();
 const STACKS_API = process.env.STACKS_API_URL || "https://api.testnet.hiro.so";
 const DEPLOYER = process.env.DEPLOYER_ADDRESS!;
 const NETWORK = process.env.STACKS_NETWORK || "testnet";
+const AGGREGATOR_CONTRACT =
+  NETWORK === "testnet" ? "sbtc-yield-aggregator-v2" : "sbtc-yield-aggregator";
 
 export interface ProtocolAPYs {
   zest: number;
@@ -95,7 +97,7 @@ async function getProtocolAPYs(): Promise<ProtocolAPYs> {
 
 async function getVaultTvl(): Promise<number> {
   try {
-    const data = await callReadOnly("sbtc-yield-aggregator", "get-vault-stats");
+    const data = await callReadOnly(AGGREGATOR_CONTRACT, "get-vault-stats");
     const parsed = cvToJSON(data.result);
     const v = parsed.value?.value ?? parsed.value;
     return Number(v["total-sbtc"]?.value ?? 0);
@@ -111,7 +113,7 @@ async function getUserPositions(): Promise<UserPosition[]> {
 
   try {
     const res = await axios.get(
-      `${STACKS_API}/extended/v1/contract/${DEPLOYER}.sbtc-yield-aggregator/events?limit=50`
+      `${STACKS_API}/extended/v1/contract/${DEPLOYER}.${AGGREGATOR_CONTRACT}/events?limit=50`
     );
 
     const depositors = new Set<string>();
@@ -124,7 +126,7 @@ async function getUserPositions(): Promise<UserPosition[]> {
 
     for (const addr of depositors) {
       try {
-        const data = await callReadOnly("sbtc-yield-aggregator", "get-user-position", [
+        const data = await callReadOnly(AGGREGATOR_CONTRACT, "get-user-position", [
           principalCV(addr),
         ]);
         const parsed = cvToJSON(data.result);
@@ -180,7 +182,7 @@ async function getRecentWithdrawals(blockHeight: number): Promise<number[]> {
   const withdrawals: number[] = [];
   try {
     const res = await axios.get(
-      `${STACKS_API}/extended/v1/contract/${DEPLOYER}.sbtc-yield-aggregator/events?limit=50`
+      `${STACKS_API}/extended/v1/contract/${DEPLOYER}.${AGGREGATOR_CONTRACT}/events?limit=50`
     );
     for (const event of res.data.results || []) {
       if (event.contract_log?.value?.repr?.includes("withdraw")) {

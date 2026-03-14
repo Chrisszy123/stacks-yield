@@ -37,6 +37,10 @@ const INTERVAL = Math.max(
 );
 const NETWORK =
   process.env.STACKS_NETWORK === "mainnet" ? STACKS_MAINNET : STACKS_TESTNET;
+const AGGREGATOR_CONTRACT =
+  process.env.STACKS_NETWORK === "testnet"
+    ? "sbtc-yield-aggregator-v2"
+    : "sbtc-yield-aggregator";
 
 async function pruneExpiredTxIds(blockHeight: number) {
   const expiredTxIds = getExpiredTxIds(blockHeight);
@@ -102,7 +106,7 @@ async function executeAction(
 
   const tx = await makeContractCall({
     contractAddress: DEPLOYER,
-    contractName: "sbtc-yield-aggregator",
+    contractName: AGGREGATOR_CONTRACT,
     functionName,
     functionArgs,
     senderKey: KEEPER_KEY,

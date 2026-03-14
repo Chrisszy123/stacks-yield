@@ -6,8 +6,7 @@ import { DEPLOYER_ADDRESS } from "@/constants/contracts";
 import { serializeCV } from "@stacks/transactions";
 
 function cvToHex(cv: Parameters<typeof serializeCV>[0]): string {
-  const serialized = serializeCV(cv);
-  return Buffer.from(serialized).toString("hex");
+  return serializeCV(cv);
 }
 
 export async function GET(req: NextRequest) {

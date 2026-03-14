@@ -15,7 +15,7 @@ export const COUNTER_CONTRACT = {
 } as const;
 
 export const CONTRACTS = {
-  aggregator: `${DEPLOYER_ADDRESS}.sbtc-yield-aggregator`,
+  aggregator: `${DEPLOYER_ADDRESS}.${process.env.NEXT_PUBLIC_STACKS_NETWORK === "testnet" ? "sbtc-yield-aggregator-v2" : "sbtc-yield-aggregator"}`,
   ysbtcToken: `${DEPLOYER_ADDRESS}.ysbtc-token`,
   mockSbtc: `${DEPLOYER_ADDRESS}.mock-sbtc`,
   strategyZest: `${DEPLOYER_ADDRESS}.strategy-zest`,

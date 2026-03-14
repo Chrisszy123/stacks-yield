@@ -8,45 +8,24 @@ plan:
   - id: 0
     transactions:
     - transaction-type: contract-publish
-      contract-name: mock-sbtc
+      contract-name: molbot-registry
       expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 9630
-      path: contracts/mock-sbtc.clar
+      cost: 34210
+      path: contracts/molbot-registry.clar
       anchor-block-only: true
       clarity-version: 2
     - transaction-type: contract-publish
-      contract-name: ysbtc-token
+      contract-name: x402-verifier
       expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 17960
-      path: contracts/ysbtc-token.clar
+      cost: 17040
+      path: contracts/x402-verifier.clar
       anchor-block-only: true
       clarity-version: 2
     - transaction-type: contract-publish
-      contract-name: sbtc-yield-aggregator
+      contract-name: sbtc-yield-aggregator-v2
       expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 81190
-      path: contracts/sbtc-yield-aggregator.clar
-      anchor-block-only: true
-      clarity-version: 2
-    - transaction-type: contract-publish
-      contract-name: strategy-alex
-      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 7120
-      path: contracts/strategy-alex.clar
-      anchor-block-only: true
-      clarity-version: 2
-    - transaction-type: contract-publish
-      contract-name: strategy-bitflow
-      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 7430
-      path: contracts/strategy-bitflow.clar
-      anchor-block-only: true
-      clarity-version: 2
-    - transaction-type: contract-publish
-      contract-name: strategy-zest
-      expected-sender: ST36YXSCB1DDWD04NMR5ZZFEK7JTB1MD47QRNGBNA
-      cost: 9910
-      path: contracts/strategy-zest.clar
+      cost: 98580
+      path: contracts/sbtc-yield-aggregator-v2.clar
       anchor-block-only: true
       clarity-version: 2
     epoch: '2.5'
